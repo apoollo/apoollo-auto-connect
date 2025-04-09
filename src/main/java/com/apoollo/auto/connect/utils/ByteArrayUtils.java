@@ -63,13 +63,6 @@ public class ByteArrayUtils {
 		return bytes;
 	}
 
-	public static byte[] join(byte[] array1, byte[] array2) {
-		byte[] result = new byte[array1.length + array2.length];
-		System.arraycopy(array1, 0, result, 0, array1.length);
-		System.arraycopy(array2, 0, result, array1.length, array2.length);
-		return result;
-	}
-
 	public static byte[] joins(byte[]... arrays) {
 		int length = Stream.of(arrays).filter(Objects::nonNull).mapToInt(array -> array.length).sum();
 		byte[] result = new byte[length];
@@ -77,13 +70,15 @@ public class ByteArrayUtils {
 		int currentLength = 0;
 		for (int i = 0; i < arrays.length; i++) {
 			byte[] array = arrays[i];
-			System.arraycopy(array, 0, result, currentLength, array.length);
-			currentLength += array.length;
+			if (null != array && array.length > 0) {
+				System.arraycopy(array, 0, result, currentLength, array.length);
+				currentLength += array.length;
+			}
 		}
 		return result;
 	}
 
-	public static byte[] hexStringToByteArray(String hex) {
+	public static byte[] hexStringTo(String hex) {
 		int len = hex.length();
 		byte[] data = new byte[len / 2];
 		for (int i = 0; i < len; i += 2) {

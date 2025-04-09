@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.apoollo.auto.connect.miio.protocol.request.MiIoRequest;
 import com.apoollo.auto.connect.miio.protocol.response.MiIoResponse;
 import com.apoollo.auto.connect.socket.UdpSocketDevice;
 import com.apoollo.auto.connect.utils.ByteArrayUtils;
@@ -23,6 +24,11 @@ import com.apoollo.auto.connect.utils.InetAddressUtils;
 
 public class MiIoDevice extends UdpSocketDevice<MiIoResponse> {
 
+	public static void main(String[] args) {
+		MiIoRequest miIoRequest = new MiIoRequest(null, new byte[16], 0, 0);
+		System.out.println(ByteArrayUtils.toHexString(miIoRequest.buildMiIoProtocol()));
+	}
+
 	private UdpSocketDeviceRequest buildRequest(InetAddress inteAdress, boolean broadcast, int responseBufferLength,
 			byte[] content) {
 		return new UdpSocketDeviceRequest(socket -> {
@@ -33,7 +39,7 @@ public class MiIoDevice extends UdpSocketDevice<MiIoResponse> {
 
 	public MiIoResponse hello(InetAddress inteAdress) {
 		byte[] hello = ByteArrayUtils
-				.hexStringToByteArray("21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+				.hexStringTo("21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 		return request(buildRequest(inteAdress, true, 1024, hello));
 	}
 

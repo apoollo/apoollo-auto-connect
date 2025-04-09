@@ -39,10 +39,11 @@ public class MiIoRequest {
 		miIoProtocol.setTimestamp(timestamp);
 		if (null != payload) {
 			byte[] key = EncryptionUtils.md5(token);
-			byte[] iv = EncryptionUtils.md5(ByteArrayUtils.join(key, token));
-			miIoProtocol
-					.setEncrypted(EncryptionUtils.encrypt(EncryptionUtils.md5(token), iv, JSON.toJSONBytes(payload)));
-			miIoProtocol.setPacketLength(miIoProtocol.getPacketLength() + miIoProtocol.getEncrypted().length);
+			byte[] iv = EncryptionUtils.md5(ByteArrayUtils.joins(key, token));
+			byte[] encrypted = EncryptionUtils.encrypt(key, iv, JSON.toJSONBytes(payload));
+			long length = miIoProtocol.getPacketLength() + miIoProtocol.getEncrypted().length;
+			miIoProtocol.setEncrypted(encrypted);
+			miIoProtocol.setPacketLength(length);
 		}
 		return miIoProtocol.build(token);
 	}
@@ -102,7 +103,5 @@ public class MiIoRequest {
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
 	}
-	
-	
 
 }
