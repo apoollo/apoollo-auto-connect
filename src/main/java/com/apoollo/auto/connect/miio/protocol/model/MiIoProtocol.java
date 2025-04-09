@@ -1,7 +1,11 @@
 /**
  * 
  */
-package com.apoollo.messagebot.miio.protocol.model;
+package com.apoollo.auto.connect.miio.protocol.model;
+
+import java.nio.ByteBuffer;
+
+import com.apoollo.auto.connect.utils.ByteArrayUtils;
 
 /**
  * https://github.com/OpenMiHome/mihome-binary-protocol/blob/master/doc/PROTOCOL.md
@@ -62,7 +66,7 @@ package com.apoollo.messagebot.miio.protocol.model;
  * @since 2025-04-02
  */
 
-public class MiIoMessage {
+public class MiIoProtocol {
 
 	// header
 	protected short magicNumber;
@@ -71,17 +75,35 @@ public class MiIoMessage {
 	protected int deviceId;
 	protected long timestamp;// 无符号32位
 
-	// hello is token , other is checksum
-	protected byte[] checksumOrToken;
-
 	// data
 	protected byte[] encrypted;
+
+	private byte[] buildHeaderBytes() {
+		ByteBuffer byteBuffer = ByteBuffer.allocate(16);
+		byteBuffer.putShort(magicNumber);
+		byteBuffer.putShort((short) packetLength);
+		byteBuffer.putInt(unknown1);
+		byteBuffer.putInt(deviceId);
+		byteBuffer.putInt((int) timestamp);
+		return byteBuffer.array();
+	}
+
+	public byte[] build(byte[] token) {
+		return ByteArrayUtils.joins(buildHeaderBytes(), token, encrypted);
+	}
 
 	/**
 	 * @return the magicNumber
 	 */
 	public short getMagicNumber() {
 		return magicNumber;
+	}
+
+	/**
+	 * @param magicNumber the magicNumber to set
+	 */
+	public void setMagicNumber(short magicNumber) {
+		this.magicNumber = magicNumber;
 	}
 
 	/**
@@ -92,10 +114,24 @@ public class MiIoMessage {
 	}
 
 	/**
+	 * @param packetLength the packetLength to set
+	 */
+	public void setPacketLength(long packetLength) {
+		this.packetLength = packetLength;
+	}
+
+	/**
 	 * @return the unknown1
 	 */
 	public int getUnknown1() {
 		return unknown1;
+	}
+
+	/**
+	 * @param unknown1 the unknown1 to set
+	 */
+	public void setUnknown1(int unknown1) {
+		this.unknown1 = unknown1;
 	}
 
 	/**
@@ -106,17 +142,24 @@ public class MiIoMessage {
 	}
 
 	/**
+	 * @param deviceId the deviceId to set
+	 */
+	public void setDeviceId(int deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	/**
 	 * @return the timestamp
 	 */
-	public Long getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 
 	/**
-	 * @return the checksumOrToken
+	 * @param timestamp the timestamp to set
 	 */
-	public byte[] getChecksumOrToken() {
-		return checksumOrToken;
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	/**
@@ -124,6 +167,13 @@ public class MiIoMessage {
 	 */
 	public byte[] getEncrypted() {
 		return encrypted;
+	}
+
+	/**
+	 * @param encrypted the encrypted to set
+	 */
+	public void setEncrypted(byte[] encrypted) {
+		this.encrypted = encrypted;
 	}
 
 }
