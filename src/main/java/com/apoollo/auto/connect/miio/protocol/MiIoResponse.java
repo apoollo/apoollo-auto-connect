@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.miio.protocol.response;
+package com.apoollo.auto.connect.miio.protocol;
 
 import java.net.DatagramPacket;
 import java.nio.ByteBuffer;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.apoollo.auto.connect.miio.protocol.model.MiIoProtocol;
 import com.apoollo.auto.connect.utils.ByteArrayUtils;
 import com.apoollo.auto.connect.utils.EncryptionUtils;
 
@@ -25,7 +24,7 @@ import com.apoollo.auto.connect.utils.EncryptionUtils;
  * @author liuyulong
  * @since 2025-04-07
  */
-public class MiIoResponse extends MiIoProtocol {
+public class MiIoResponse extends MiIoMessage {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MiIoResponse.class);
 
@@ -84,7 +83,7 @@ public class MiIoResponse extends MiIoProtocol {
 		this.magicNumber = (byteBuffer.getShort());
 
 		// Packet length: 16 bits unsigned int
-		this.packetLength = Integer.toUnsignedLong(byteBuffer.getShort());
+		this.packetLength = byteBuffer.getShort();
 
 		// Unknown1: 32 bits
 		this.unknown1 = (byteBuffer.getInt());
@@ -94,7 +93,7 @@ public class MiIoResponse extends MiIoProtocol {
 		this.hexDeviceId = Integer.toHexString(this.deviceId);
 
 		// Stamp: 32 bit unsigned int
-		this.timestamp = Integer.toUnsignedLong(byteBuffer.getInt());
+		this.timestamp = byteBuffer.getInt();
 
 		// 128-bit checksumOrToken
 		byte[] checksumOrToken = new byte[32];

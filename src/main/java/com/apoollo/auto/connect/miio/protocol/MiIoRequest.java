@@ -1,10 +1,9 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.miio.protocol.request;
+package com.apoollo.auto.connect.miio.protocol;
 
 import com.alibaba.fastjson2.JSON;
-import com.apoollo.auto.connect.miio.protocol.model.MiIoProtocol;
 import com.apoollo.auto.connect.utils.ByteArrayUtils;
 import com.apoollo.auto.connect.utils.EncryptionUtils;
 
@@ -17,31 +16,43 @@ public class MiIoRequest {
 	private MiIoRequestPayload payload;
 	private byte[] token;
 	private int deviceId;
-	private long timestamp;
+	private int unknown1;
+	private int timestamp;
 
-	public MiIoRequest() {
-	}
-
-	public MiIoRequest(MiIoRequestPayload payload, byte[] token, int deviceId, long timestamp) {
+	public MiIoRequest(MiIoRequestPayload payload, byte[] token, int deviceId, int unknown1, int timestamp) {
 		super();
 		this.payload = payload;
 		this.token = token;
 		this.deviceId = deviceId;
+		this.unknown1 = unknown1;
 		this.timestamp = timestamp;
 	}
 
+	public MiIoRequest(MiIoRequestPayload payload, byte[] token, int deviceId, int timestamp) {
+		this(payload, token, deviceId, 0, timestamp);
+	}
+
+	public static MiIoRequest buildHelloMiIoRequest() {
+		return new MiIoRequest(null, new byte[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, -1,
+				-1, -1);
+	}
+
 	public byte[] buildMiIoProtocol() {
-		MiIoProtocol miIoProtocol = new MiIoProtocol();
-		miIoProtocol.setMagicNumber((short) 0x2131);
-		miIoProtocol.setPacketLength(32);
-		miIoProtocol.setUnknown1(0);
+
+		short magicNumber = 0x2131;
+		short packageBytesLength = 32;
+
+		MiIoMessage miIoProtocol = new MiIoMessage();
+		miIoProtocol.setMagicNumber(magicNumber);
+		miIoProtocol.setPacketLength(packageBytesLength);
+		miIoProtocol.setUnknown1(unknown1);
 		miIoProtocol.setDeviceId(deviceId);
 		miIoProtocol.setTimestamp(timestamp);
 		if (null != payload) {
 			byte[] key = EncryptionUtils.md5(token);
 			byte[] iv = EncryptionUtils.md5(ByteArrayUtils.joins(key, token));
 			byte[] encrypted = EncryptionUtils.encrypt(key, iv, JSON.toJSONBytes(payload));
-			long length = miIoProtocol.getPacketLength() + miIoProtocol.getEncrypted().length;
+			short length = (short) (packageBytesLength + miIoProtocol.getEncrypted().length);
 			miIoProtocol.setEncrypted(encrypted);
 			miIoProtocol.setPacketLength(length);
 		}
@@ -56,24 +67,10 @@ public class MiIoRequest {
 	}
 
 	/**
-	 * @param payload the payload to set
-	 */
-	public void setPayload(MiIoRequestPayload payload) {
-		this.payload = payload;
-	}
-
-	/**
 	 * @return the token
 	 */
 	public byte[] getToken() {
 		return token;
-	}
-
-	/**
-	 * @param token the token to set
-	 */
-	public void setToken(byte[] token) {
-		this.token = token;
 	}
 
 	/**
@@ -84,10 +81,10 @@ public class MiIoRequest {
 	}
 
 	/**
-	 * @param deviceId the deviceId to set
+	 * @return the unknown1
 	 */
-	public void setDeviceId(int deviceId) {
-		this.deviceId = deviceId;
+	public int getUnknown1() {
+		return unknown1;
 	}
 
 	/**
@@ -95,13 +92,6 @@ public class MiIoRequest {
 	 */
 	public long getTimestamp() {
 		return timestamp;
-	}
-
-	/**
-	 * @param timestamp the timestamp to set
-	 */
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
 	}
 
 }

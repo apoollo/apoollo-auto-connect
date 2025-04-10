@@ -5,16 +5,12 @@ package com.apoollo.auto.connect.miio.protocol;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.apoollo.auto.connect.miio.protocol.request.MiIoRequest;
-import com.apoollo.auto.connect.miio.protocol.response.MiIoResponse;
 import com.apoollo.auto.connect.socket.UdpSocketDevice;
-import com.apoollo.auto.connect.utils.ByteArrayUtils;
 import com.apoollo.auto.connect.utils.InetAddressUtils;
 
 /**
@@ -23,11 +19,6 @@ import com.apoollo.auto.connect.utils.InetAddressUtils;
  */
 
 public class MiIoDevice extends UdpSocketDevice<MiIoResponse> {
-
-	public static void main(String[] args) {
-		MiIoRequest miIoRequest = new MiIoRequest(null, new byte[16], 0, 0);
-		System.out.println(ByteArrayUtils.toHexString(miIoRequest.buildMiIoProtocol()));
-	}
 
 	private UdpSocketDeviceRequest buildRequest(InetAddress inteAdress, boolean broadcast, int responseBufferLength,
 			byte[] content) {
@@ -38,12 +29,12 @@ public class MiIoDevice extends UdpSocketDevice<MiIoResponse> {
 	}
 
 	public MiIoResponse hello(InetAddress inteAdress) {
-		byte[] hello = ByteArrayUtils
-				.hexStringTo("21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-		return request(buildRequest(inteAdress, true, 1024, hello));
+		// byte[] hello =
+		// ByteArrayUtils.hexStringTo("21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+		return request(buildRequest(inteAdress, true, 1024, MiIoRequest.buildHelloMiIoRequest().buildMiIoProtocol()));
 	}
 
-	public List<MiIoResponse> discover() throws UnknownHostException {
+	public List<MiIoResponse> discover() {
 		List<MiIoResponse> miioResponses = Stream
 				.concat(InetAddressUtils.listAllBroadcastAddresses().stream(),
 						Stream.of(InetAddressUtils.getInetAddress("255.255.255.255")))
@@ -51,8 +42,8 @@ public class MiIoDevice extends UdpSocketDevice<MiIoResponse> {
 		return miioResponses;
 	}
 
-	public void action() {
-
+	public MiIoResponse action(InetAddress inteAdress, MiIoRequest miIoRequest) {
+		return request(buildRequest(inteAdress, false, 4096, miIoRequest.buildMiIoProtocol()));
 	}
 
 	@Override

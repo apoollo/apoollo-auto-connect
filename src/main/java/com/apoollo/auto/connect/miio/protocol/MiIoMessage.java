@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.miio.protocol.model;
+package com.apoollo.auto.connect.miio.protocol;
 
 import java.nio.ByteBuffer;
 
@@ -66,14 +66,14 @@ import com.apoollo.auto.connect.utils.ByteArrayUtils;
  * @since 2025-04-02
  */
 
-public class MiIoProtocol {
+public class MiIoMessage {
 
 	// header
 	protected short magicNumber;
-	protected long packetLength;// 无符号16位
+	protected short packetLength;// 无符号16位
 	protected int unknown1;
 	protected int deviceId;
-	protected long timestamp;// 无符号32位
+	protected int timestamp;// 无符号32位
 
 	// data
 	protected byte[] encrypted;
@@ -81,10 +81,10 @@ public class MiIoProtocol {
 	private byte[] buildHeaderBytes() {
 		ByteBuffer byteBuffer = ByteBuffer.allocate(16);
 		byteBuffer.putShort(magicNumber);
-		byteBuffer.putShort((short) packetLength);
+		byteBuffer.putShort(packetLength);
 		byteBuffer.putInt(unknown1);
 		byteBuffer.putInt(deviceId);
-		byteBuffer.putInt((int) timestamp);
+		byteBuffer.putInt(timestamp);
 		return byteBuffer.array();
 	}
 
@@ -109,14 +109,14 @@ public class MiIoProtocol {
 	/**
 	 * @return the packetLength
 	 */
-	public long getPacketLength() {
+	public short getPacketLength() {
 		return packetLength;
 	}
 
 	/**
 	 * @param packetLength the packetLength to set
 	 */
-	public void setPacketLength(long packetLength) {
+	public void setPacketLength(short packetLength) {
 		this.packetLength = packetLength;
 	}
 
@@ -151,14 +151,14 @@ public class MiIoProtocol {
 	/**
 	 * @return the timestamp
 	 */
-	public long getTimestamp() {
+	public int getTimestamp() {
 		return timestamp;
 	}
 
 	/**
 	 * @param timestamp the timestamp to set
 	 */
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(int timestamp) {
 		this.timestamp = timestamp;
 	}
 

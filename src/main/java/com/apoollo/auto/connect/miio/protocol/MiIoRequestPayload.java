@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.miio.protocol.request;
+package com.apoollo.auto.connect.miio.protocol;
 
 /**
  * @author liuyulong
