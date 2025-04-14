@@ -3,6 +3,7 @@
  */
 package com.apoollo.auto.connect.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -21,6 +22,14 @@ import javax.crypto.spec.SecretKeySpec;
  * @since 2025-04-09
  */
 public class EncryptionUtils {
+
+	public static String md5ToUpperHexString(String input) {
+		return md5ToHexString(input).toUpperCase();
+	}
+	
+	public static String md5ToHexString(String input) {
+		return ByteArrayUtils.toHexString(md5(input.getBytes(StandardCharsets.UTF_8)));
+	}
 
 	public static byte[] md5(byte[] bs) {
 		try {
