@@ -58,4 +58,6 @@ public class MiCloudApiAdapter {
 		return jsonObject.toJavaObject(ServiceLoginAuth2Response.class);
 	}
 
+	
+
 }

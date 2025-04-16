@@ -32,4 +32,5 @@ public interface XiaomiAccountApi {
 	public String serviceLoginAuth2(@RequestHeader Map<String, String> headers,
 			@CookieValue Map<String, String> cookies, ServiceLoginAuth2Request serviceLoginAuth2Request,
 			Options options);
+	
 }
