@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.micloud.api.response;
+package com.apoollo.auto.connect.brand.xiaomi.cloud.api.response;
 
 import lombok.Getter;
 import lombok.Setter;

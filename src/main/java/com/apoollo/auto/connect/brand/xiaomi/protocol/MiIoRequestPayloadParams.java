@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.miio.protocol;
+package com.apoollo.auto.connect.brand.xiaomi.protocol;
 
 /**
  * @author liuyulong

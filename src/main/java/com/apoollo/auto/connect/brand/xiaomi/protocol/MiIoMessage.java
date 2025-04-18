@@ -1,16 +1,16 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.miio.protocol;
+package com.apoollo.auto.connect.brand.xiaomi.protocol;
 
 import java.nio.ByteBuffer;
 
 import com.apoollo.auto.connect.utils.ByteArrayUtils;
 
 /**
- * https://github.com/OpenMiHome/mihome-binary-protocol/blob/master/doc/PROTOCOL.md
  * 
- * 数据包基本格式
+ * <h1>数据包基本格式</h1>
+ * https://github.com/OpenMiHome/mihome-binary-protocol/blob/master/doc/PROTOCOL.md
  * 
  * <pre>
  0                   1                   2                   3   

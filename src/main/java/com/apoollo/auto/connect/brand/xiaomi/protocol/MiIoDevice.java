@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.miio.protocol;
+package com.apoollo.auto.connect.brand.xiaomi.protocol;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.apoollo.auto.connect.socket.UdpSocketDevice;
+import com.apoollo.auto.connect.device.UdpSocketDevice;
 import com.apoollo.auto.connect.utils.InetAddressUtils;
 
 /**

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.micloud.api;
+package com.apoollo.auto.connect.brand.xiaomi.cloud.api;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.apoollo.auto.connect.micloud.api.request.ServiceLoginAuth2Request;
+import com.apoollo.auto.connect.brand.xiaomi.micloud.api.request.ServiceLoginAuth2Request;
 
 import feign.Request.Options;
 

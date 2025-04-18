@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.socket;
+package com.apoollo.auto.connect.device;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

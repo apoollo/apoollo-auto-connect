@@ -8,7 +8,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.apoollo.auto.connect.micloud.api.response.ServiceLoginAuth2Response;
+import com.apoollo.auto.connect.brand.xiaomi.cloud.api.MiCloudApiAdapter;
+import com.apoollo.auto.connect.brand.xiaomi.cloud.api.response.ServiceLoginAuth2Response;
 
 @SpringBootTest
 @ActiveProfiles("local-dev")

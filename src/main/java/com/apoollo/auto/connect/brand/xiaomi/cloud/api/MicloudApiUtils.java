@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.apoollo.auto.connect.micloud.api;
+package com.apoollo.auto.connect.brand.xiaomi.cloud.api;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.apoollo.auto.connect.micloud.api.request.GetDeviceListRequest;
+import com.apoollo.auto.connect.brand.xiaomi.micloud.api.request.GetDeviceListRequest;
 import com.apoollo.commons.util.OkHttpClientUtils;
 
 import feign.Request.Options;
