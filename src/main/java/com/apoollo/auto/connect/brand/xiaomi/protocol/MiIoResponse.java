@@ -24,7 +24,7 @@ import com.apoollo.auto.connect.utils.EncryptionUtils;
  * @author liuyulong
  * @since 2025-04-07
  */
-public class MiIoResponse extends MiIoMessage {
+public class MiIoResponse extends MiIoProtocol {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MiIoResponse.class);
 

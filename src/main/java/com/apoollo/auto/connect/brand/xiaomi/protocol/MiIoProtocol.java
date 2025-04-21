@@ -66,7 +66,7 @@ import com.apoollo.auto.connect.utils.ByteArrayUtils;
  * @since 2025-04-02
  */
 
-public class MiIoMessage {
+public class MiIoProtocol {
 
 	// header
 	protected short magicNumber;

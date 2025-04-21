@@ -42,7 +42,7 @@ public class MiIoRequest {
 		short magicNumber = 0x2131;
 		short packageBytesLength = 32;
 
-		MiIoMessage miIoProtocol = new MiIoMessage();
+		MiIoProtocol miIoProtocol = new MiIoProtocol();
 		miIoProtocol.setMagicNumber(magicNumber);
 		miIoProtocol.setPacketLength(packageBytesLength);
 		miIoProtocol.setUnknown1(unknown1);

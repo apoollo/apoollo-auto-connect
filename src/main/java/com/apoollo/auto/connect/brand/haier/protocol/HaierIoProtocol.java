@@ -3,6 +3,11 @@
  */
 package com.apoollo.auto.connect.brand.haier.protocol;
 
+import java.nio.ByteBuffer;
+
+import com.apoollo.auto.connect.utils.ByteArrayUtils;
+import com.apoollo.auto.connect.utils.Crc16ArcUtils;
+
 /**
  * <h1>数据包基本格式</h1>
  * 
@@ -29,7 +34,19 @@ package com.apoollo.auto.connect.brand.haier.protocol;
  * @author liuyulong
  * @since 2025-04-18
  */
-public class HaierIoMessage {
+public class HaierIoProtocol {
+
+	public static final byte[] DEFAULT_SEPARATOR = { -1, -1 };
+
+	public static final byte[] DEFAULT_RESERVED_SPACE = { 0, 0, 0, 0, 0 };
+
+	public static final byte NO_DATA_PACKET_BYTE_LENGTH = 8;// flags + reservedSpace + type + checksum
+
+	private static final byte NO_DATA_CHECK_BYTE_LENGTH = 8;// length + flags + reservedSpace + type
+
+	public static final byte HAS_CRC_FLAGS = 0x40;
+
+	public static final byte NOT_CRC_FLAGS = 0x00;
 
 	protected byte[] separator;// 16位，分隔符，用作数据包的起始标记
 	protected byte length;// 8位，整个包的字节数，最大字节数254，包含flags、reservedSpace、type、data、checksum
@@ -37,9 +54,49 @@ public class HaierIoMessage {
 	protected byte[] reservedSpace;// 40位 保留字段供将来使用，以0x00填充
 	protected byte type;// 8位，数据包类型，取决于协议，可能跟业务相关
 	protected byte[] data;// 可变长度，数据包业务数据，最大字节246，可以为空，有时后，数据的前2个字节会用作子命令
-	protected byte checksum;// 8位，数据包中除分隔符字节、CRC和校验和本身之外的所有字节之和的最低有效字节。
+	protected byte checksum;// 8位，数据包中除了separator、checksum、crc之外的所有字节之和的最低有效字节。
 	protected byte[] crc;// 16位，数据包中除了separator、checksum、crc之外的所有字节的CRC
 							// 16（使用CRC-16/ARC算法）。只有当flags指示CRC时，CRC才可用。
+
+	public byte[] getCheckBytes() {
+		int checkLength = NO_DATA_CHECK_BYTE_LENGTH;
+		if (null != this.data) {
+			checkLength += this.data.length;
+		}
+		ByteBuffer byteBuffer = ByteBuffer.allocate(checkLength);
+		byteBuffer.put(this.length);
+		byteBuffer.put(this.flags);
+		byteBuffer.put(this.reservedSpace);
+		byteBuffer.put(type);
+		if (null != this.data) {
+			byteBuffer.put(this.data);
+		}
+		return byteBuffer.array();
+	}
+
+	public byte buildChecksum() {
+		return ByteArrayUtils.unsignedLongSumToByte(this.getCheckBytes());
+	}
+
+	public byte[] buildCrc() {
+		short crc = Crc16ArcUtils.crc16(getCheckBytes());
+		ByteBuffer byteBuffer = ByteBuffer.allocate(2);
+		return byteBuffer.putShort(crc).array();
+	}
+
+	public boolean hasCrc() {
+		return this.flags == HAS_CRC_FLAGS;
+	}
+
+	public byte[] build() {
+		byte[] messageBytes = ByteArrayUtils.joins(this.separator, getCheckBytes(), new byte[] { this.checksum },
+				hasCrc() ? this.crc : null);
+		if (messageBytes.length > 254) {
+			throw new RuntimeException("haier message protocol max length is 254 , current is :" + messageBytes.length);
+		}
+		return messageBytes;
+
+	}
 
 	/**
 	 * @return the separator

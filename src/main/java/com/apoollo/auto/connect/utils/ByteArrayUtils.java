@@ -78,6 +78,18 @@ public class ByteArrayUtils {
 		return result;
 	}
 
+	public static long unsignedLongSumToLong(byte[] bytes) {
+		long sum = 0;
+		for (int i = 0; i < bytes.length; i++) {
+			sum += Byte.toUnsignedLong(bytes[i]);
+		}
+		return sum;
+	}
+
+	public static byte unsignedLongSumToByte(byte[] bytes) {
+		return (byte) (unsignedLongSumToLong(bytes) & 0xFF);
+	}
+
 	public static byte[] hexStringTo(String hex) {
 		int len = hex.length();
 		byte[] data = new byte[len / 2];

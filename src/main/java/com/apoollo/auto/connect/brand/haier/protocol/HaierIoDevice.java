@@ -18,4 +18,7 @@ public class HaierIoDevice extends TcpSocketDevice<HaierIoResponse> {
 		return new HaierIoResponse(inputStream);
 	}
 
+	public HaierIoResponse request(String host, int port, HaierIoRequest haierIoRequest) {
+		return request(host, port, haierIoRequest.buildHaierIoProtocol());
+	}
 }
