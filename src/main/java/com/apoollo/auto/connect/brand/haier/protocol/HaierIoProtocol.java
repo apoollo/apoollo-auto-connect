@@ -85,7 +85,7 @@ public class HaierIoProtocol {
 	}
 
 	public boolean hasCrc() {
-		return this.flags == HAS_CRC_FLAGS;
+		return this.flags != NOT_CRC_FLAGS;
 	}
 
 	public byte[] build() {

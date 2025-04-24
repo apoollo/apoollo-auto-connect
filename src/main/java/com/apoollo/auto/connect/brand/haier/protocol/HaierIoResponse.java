@@ -3,6 +3,7 @@
  */
 package com.apoollo.auto.connect.brand.haier.protocol;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -17,6 +18,10 @@ import org.slf4j.LoggerFactory;
 public class HaierIoResponse extends HaierIoProtocol {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HaierIoResponse.class);
+
+	public HaierIoResponse(byte[] bytes) {
+		this(new ByteArrayInputStream(bytes));
+	}
 
 	public HaierIoResponse(InputStream inputStream) {
 		do {

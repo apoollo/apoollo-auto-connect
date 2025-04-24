@@ -20,7 +20,7 @@ import com.apoollo.auto.connect.utils.InetAddressUtils;
 
 public class MiIoDevice extends UdpSocketDevice<MiIoResponse> {
 
-	private UdpSocketDeviceRequest buildRequest(InetAddress inteAdress, boolean broadcast, int responseBufferLength,
+	protected UdpSocketDeviceRequest buildRequest(InetAddress inteAdress, boolean broadcast, int responseBufferLength,
 			byte[] content) {
 		return new UdpSocketDeviceRequest(socket -> {
 			socket.setBroadcast(broadcast);
