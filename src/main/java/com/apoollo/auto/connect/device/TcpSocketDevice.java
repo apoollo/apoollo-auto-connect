@@ -8,14 +8,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import com.apoollo.auto.connect.model.ThrowingConsumer;
+
 /**
  * @author liuyulong
  * @since 2025-04-16
  */
 public abstract class TcpSocketDevice<T> {
 
-	public T request(String host, int port, byte[] data) {
+	public T request(String host, int port, ThrowingConsumer<Socket> configSocket, byte[] data) {
 		try (Socket socket = new Socket(host, port)) {
+			configSocket.accept(socket);
 			OutputStream outputStream = socket.getOutputStream();
 			outputStream.write(data);
 			outputStream.flush();
@@ -25,6 +28,7 @@ public abstract class TcpSocketDevice<T> {
 			throw new RuntimeException(e);
 		}
 	}
+
 
 	public abstract T getResponse(InputStream inputStream);
 }

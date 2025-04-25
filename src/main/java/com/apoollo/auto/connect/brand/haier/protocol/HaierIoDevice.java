@@ -19,6 +19,12 @@ public class HaierIoDevice extends TcpSocketDevice<HaierIoResponse> {
 		return new HaierIoResponse(inputStream);
 	}
 
+	public HaierIoResponse request(String host, int port, byte[] data) {
+		return request(host, port, socket -> {
+			socket.setSoTimeout(5000);
+		}, data);
+	}
+
 	public HaierIoResponse request(String host, int port, HaierIoRequest haierIoRequest) {
 		return request(host, port, haierIoRequest.buildHaierIoProtocol());
 	}
@@ -46,9 +52,12 @@ public class HaierIoDevice extends TcpSocketDevice<HaierIoResponse> {
 
 	public static void main(String[] args) {
 
+		// 56800
+
 		new HaierIoResponse(ByteArrayUtils.hexStringTo("ffff0a000000000000014d0159"));// hello
 		new HaierIoResponse(ByteArrayUtils.hexStringTo("ffff0a000000000000014d025a"));// on
 		new HaierIoResponse(ByteArrayUtils.hexStringTo("ffff0a000000000000014d035b"));// of
 		new HaierIoResponse(ByteArrayUtils.hexStringTo("ffff08000000000000737b"));// init
 	}
+
 }
